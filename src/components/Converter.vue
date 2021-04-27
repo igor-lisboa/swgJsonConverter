@@ -42,6 +42,33 @@ export default defineComponent({
         alert(e);
       }
     };
+    const makePropriety = (obj: {
+      type: string;
+      property: string | undefined | null;
+      example: string | number | object | undefined;
+      required: boolean;
+      children: any;
+    }) => {
+      let propriety = "@SWG\\Property(";
+
+      if (obj.type != undefined) {
+        propriety += 'type="' + obj.type + '",';
+      }
+
+      if (obj.property != undefined) {
+        propriety += 'property="' + obj.property + '",';
+      }
+
+      if (obj.example != undefined) {
+        propriety += 'example="' + obj.example + '",';
+      }
+
+      if (obj.required != undefined) {
+        // propriety += 'required="' + obj.required + '",';
+      }
+
+      return propriety;
+    };
     const buildSwgSchema = (
       obj: {
         type: string;
@@ -53,24 +80,12 @@ export default defineComponent({
       swgSchema: string
     ) => {
       if (swgSchema === "") {
-        swgSchema +=
-          '@SWG\\Schema(type="' +
-          obj.type +
-          '",required="' +
-          obj.required +
-          '", ';
+        swgSchema += '@SWG\\Schema(type="' + obj.type + '",';
       }
 
       if (obj.children != undefined) {
         if (obj.property != undefined) {
-          swgSchema +=
-            '@SWG\\Property(type="' +
-            obj.type +
-            '",property="' +
-            obj.property +
-            '",required="' +
-            obj.required +
-            '",';
+          swgSchema += makePropriety(obj);
         }
         Object.entries(obj.children).forEach((item: [string, any]) => {
           let newObj = item[1];
@@ -79,16 +94,7 @@ export default defineComponent({
           swgSchema = buildSwgSchema(newObj, swgSchema);
         });
       } else {
-        swgSchema +=
-          '@SWG\\Property(type="' +
-          obj.type +
-          '",property="' +
-          obj.property +
-          '",example="' +
-          obj.example +
-          '",required="' +
-          obj.required +
-          '",';
+        swgSchema += makePropriety(obj);
       }
       swgSchema += "),";
       return swgSchema;
