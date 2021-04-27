@@ -34,7 +34,7 @@ export default defineComponent({
   name: "Converter",
   setup: () => {
     const json = ref(
-      '{ "type": "object", "required": true, "children": { "teste": { "type": "boolean", "example": false, "required": false } } }'
+      '{ "type": "object", "children": { "teste": { "type": "boolean", "example": false } } }'
     );
     const convertedSwgSchema = ref("");
     const beautyJson = () => {
@@ -48,7 +48,6 @@ export default defineComponent({
       type: string;
       property: string | undefined | null;
       example: string | number | object | undefined;
-      required: boolean;
       children: any;
     }) => {
       let propriety = "@SWG\\Property(";
@@ -65,10 +64,6 @@ export default defineComponent({
         propriety += 'example="' + obj.example + '",';
       }
 
-      if (obj.required != undefined) {
-        // propriety += 'required="' + obj.required + '",';
-      }
-
       return propriety;
     };
     const buildSwgSchema = (
@@ -76,7 +71,6 @@ export default defineComponent({
         type: string;
         property: string | undefined | null;
         example: string | number | object | undefined;
-        required: boolean;
         children: any;
       },
       swgSchema: string
