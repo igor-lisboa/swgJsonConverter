@@ -33,7 +33,9 @@ import { ref, defineComponent } from "vue";
 export default defineComponent({
   name: "Converter",
   setup: () => {
-    const json = ref("{}");
+    const json = ref(
+      '{ "type": "object", "required": true, "children": { "teste": { "type": "boolean", "example": false, "required": false } } }'
+    );
     const convertedSwgSchema = ref("");
     const beautyJson = () => {
       try {
